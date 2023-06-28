@@ -1,6 +1,6 @@
 {
   "name": "ftchup",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "Level up your requests using the native Fetch API.",
   "type": "module",
   "scripts": {
