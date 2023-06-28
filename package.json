@@ -1,5 +1,5 @@
 {
-  "name": "fetchup",
+  "name": "fetch-up",
   "version": "1.0.0",
   "description": "Level up your requests using the native Fetch API.",
   "type": "module",
