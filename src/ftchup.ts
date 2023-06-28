@@ -15,7 +15,7 @@ class Ftchup {
   }
 
   /**
-   * Create an instance of FetchUp
+   * Create an instance of Ftchup
    *
    * @returns {Ftchup}
    */
