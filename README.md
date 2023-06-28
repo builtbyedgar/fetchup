@@ -4,21 +4,17 @@ Level up your requests using the native Fetch API.
 
 ![NPM](https://img.shields.io/npm/l/ftchup)
 ![npm](https://img.shields.io/npm/v/ftchup)
+<img 
+  src='https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png'
+  width='20' height='20' />
 
 🚨 This library uses TypeScript without compilation.
 
-<img 
-  src='https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png'
-  width='20' height='20' /> 🖤
-
-Fetchup is a TypeScript library that provides a simplified and type-safe way to handle API
-calls using the native JavaScript Fetch API. It offers a convenient interface for making single
-or multiple requests, with the ability to cancel ongoing requests.
-
-With proper TypeScript typings, it ensures a reliable and predictable workflow when interacting
-with APIs.
 
 
+Ftchup provides a simplified and type-safe way to handle API calls using the native JavaScript
+[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). It offers a convenient
+interface for making single or multiple requests, with the ability to cancel ongoing requests.
 ## Table of Contents
 
 - [Fetchup](#fetchup)
@@ -31,6 +27,8 @@ with APIs.
 
 ## Features
 
+Nothing magical or extravagant to say here, just what it does:
+
 - Simplified API calls using the native JavaScript Fetch API.
 - Support for single or multiple requests (in parallel).
 - Promise-based approach for handling asynchronous operations.
@@ -39,37 +37,39 @@ with APIs.
 
 ## Installation
 
-***Package manager***
-
-Make sure you have [Node.js](https://nodejs.org) installed on your system.
+The installation is the same as any of the billions of libraries you install every day in 
+your JavaScript/TypeScript projects...
 
 Using pnpm:
 
 ```shell
-pnpm install fetchup
+pnpm install ftchup
 ```
 
 Using npm:
 
 ```shell
-npm install fetchup
+npm install ftchup
 ```
 
 Using yarn:
 
 ```shell
-yarn add fetchup
+yarn add ftchup
 ```
 
 ## Usage
 
-Note that this lib uses the JavaScript Fetch API internally to fetch data, and de `request`
-method takes as parameter a `Request` object for a single fetch or an Array of `Request` objects
+This lib uses the JavaScript Fetch API internally to fetch data, and de `request`
+method takes as parameter a `Request` like object for a single fetch or an Array of `Request` like objects
 for a multiple and parallel requests. Read the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/Request)
 form more info.
 
-If you pass an Array with multiple requests, the library will automatically use the `Promise.allSettled()`
-method.
+Note that the library uses the `Promise.allSettled()` for all requests, even if the request 
+is a single request. This is not because I'm lazy, but because I think it's a good idea to 
+keep things simple and requests normalized.
+
+[MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled#return_value)
 
 Simple request:
 
@@ -77,7 +77,7 @@ Simple request:
 import { abort, request } from 'fetchup'
 
 interface Pokemon {
-  ...
+  // Is very large and I feel lazy to write it.
 }
 
 const API_URL = 'https://pokeapi.co/api/v2/'
@@ -135,14 +135,14 @@ abort()
 You can also use it with `async`/`await`
 
 ```ts
-...
-const response = await request(config)
-console.log(response)
+const responses = await request<Pokemon[]>(config)
+console.log(responses)
 ```
 
 ## Contributing
 
-Contributions are welcome. To contribute to this project, read the [Contributing Guide](./CONTRIBUTING.md)
+If you feel like contributing, I'm sorry for not having prepared a Contributing Guide,
+but you know, the usual... fork, pull request, and let's talk 😜
 
 ## License
 [MIT License](./LICENSE)
