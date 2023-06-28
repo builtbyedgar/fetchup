@@ -3,7 +3,7 @@
 Level up your requests using the native Fetch API.
 
 Fetchup is a TypeScript library that provides a simplified and type-safe way to handle API
-calls using the Fetch API in JavaScript. It offers a convenient interface for making single
+calls using the native JavaScript Fetch API. It offers a convenient interface for making single
 or multiple requests, with the ability to cancel ongoing requests.
 
 With proper TypeScript typings, it ensures a reliable and predictable workflow when interacting
@@ -16,7 +16,6 @@ with APIs.
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Installation](#installation)
-    - [Package manager](#package-manager)
   - [Usage](#usage)
   - [Contributing](#contributing)
   - [License](#license)
@@ -31,7 +30,7 @@ with APIs.
 
 ## Installation
 
-### Package manager
+***Package manager***
 
 Make sure you have [Node.js](https://nodejs.org) installed on your system.
 
@@ -55,19 +54,33 @@ yarn add fetchup
 
 ## Usage
 
+Note that this lib uses the JavaScript Fetch API internally to fetch data, and de `request`
+method takes as parameter a `Request` object for a single fetch or an Array of `Request` objects
+for a multiple and parallel requests. Read the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/Request)
+form more info.
+
+If you pass an Array with multiple requests, the library will automatically use the `Promise.allSettled()`
+method.
+
 Simple request:
 
 ```ts
-import { abort, get } from 'fetchup'
+import { abort, request } from 'fetchup'
 
-interface User {
-  id: number
-  name: string
+interface Pokemon {
+  ...
 }
 
-const API_URL = 'https://your-api-aurl.com/'
+const API_URL = 'https://pokeapi.co/api/v2/'
 
-get<User[]>(API_URL)
+const config: RequestConfig = {
+  url: API_URL + 'pokemon/charizard',
+  options: {
+    method: 'GET',
+  },
+}
+
+request<Pokemon>(config)
   .then(response => console.log(response))
   .catch(error => console.error(error))
 ```
@@ -76,17 +89,30 @@ Multiple requests:
 
 ```ts
 ...
-const requestConfig: RequestConfig[] = [
-  API_URL + '/1',
-  API_URL + '/2',
-  API_URL + '/3'
+const config: RequestConfig[] = [
+  {
+    url: API_URL + 'pokemon/dittoo',
+    options: {
+      method: 'GET',
+    },
+  },
+  {
+    url: API_URL + 'pokemon/bulbasaur',
+    options: {
+      method: 'GET',
+    },
+  },
+  {
+    url: API_URL + 'pokemon/charizard',
+    options: {
+      method: 'GET',
+    },
+  },
 ]
 
-get<User[]>(requestConfig)
-  .then(response => {
-    responses.forEach(response => {
-      console.log(response.data)
-    })
+request<Pokemon[]>(config)
+  .then(responses => {
+    responses.forEach(response => console.log(response))
   })
   .catch(error => console.error(error))
 ```
@@ -97,14 +123,17 @@ To cancel requests:
 abort()
 ```
 
+You can also use it with `async`/`await`
+
+```ts
+...
+const response = await request(config)
+console.log(response)
+```
+
 ## Contributing
 
-Contributions are welcome. To contribute to this project, follow these steps:
-
-Fork the repository.
-Create a new branch in your fork.
-Make the changes or improvements in your branch.
-Submit a pull request from your branch to the original repository.
+Contributions are welcome. To contribute to this project, read the [Contributing Guide](./CONTRIBUTING.md)
 
 ## License
 [MIT License](./LICENSE)
