@@ -74,7 +74,7 @@ keep things simple and requests normalized.
 Simple request:
 
 ```ts
-import { abort, request } from 'fetchup'
+import { abort, request } from 'ftchup'
 
 interface Pokemon {
   // Is very large and I feel lazy to write it.
