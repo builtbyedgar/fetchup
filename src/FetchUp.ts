@@ -1,5 +1,3 @@
-import { ApiResponse, IFetchup, RequestConfig } from './types'
-
 /**
  * A TypeScript library that provides a simplified and type-safe way to handle API
  * calls using the native JavaScript Fetch API. It offers a convenient interface for
@@ -33,7 +31,7 @@ class Fetchup implements IFetchup {
    * @returns {Promise<ApiResponse<T> | ApiResponse<T>[] | Error>}
    */
   async request<T>(
-    config: RequestConfig | RequestConfig[]
+    config: RequestConfig | RequestConfig[],
   ): Promise<ApiResponse<T> | ApiResponse<T>[] | Error> {
     const multi = Array.isArray(config)
 
@@ -42,7 +40,7 @@ class Fetchup implements IFetchup {
       : [Fetchup.instance.createRequest(config as RequestConfig)]
 
     const promises = requests.map((request) =>
-      window.fetch(request).then(Fetchup.instance.handleResponse)
+      window.fetch(request).then(Fetchup.instance.handleResponse),
     )
 
     try {
@@ -56,7 +54,7 @@ class Fetchup implements IFetchup {
       }
     } catch (error: Error | any | unknown) {
       return new Error(
-        error?.map((e: any) => e.message).join('\n') ?? 'unknown'
+        error?.map((e: any) => e.message).join('\n') ?? 'unknown',
       )
     }
   }
@@ -98,7 +96,7 @@ class Fetchup implements IFetchup {
    * @returns {ApiResponse<T>}
    */
   private parseSettledResponse<T>(
-    resp: PromiseSettledResult<ApiResponse<T>>
+    resp: PromiseSettledResult<ApiResponse<T>>,
   ): ApiResponse<T> {
     if (resp.status === 'fulfilled') {
       return resp.value

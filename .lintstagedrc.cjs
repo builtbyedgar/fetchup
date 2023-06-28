@@ -1,5 +1,5 @@
 module.exports = {
   $schema: 'http://json.schemastore.org/lintstagedrc.schema',
-  '*.+(ts|tsx)': ['npm run lint'],
-  '*.+(ts|tsx)': ['npm run format'],
+  '*.+(ts)': ['npm run lint'],
+  '*.+(ts)': ['npm run format'],
 }

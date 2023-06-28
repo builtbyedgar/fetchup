@@ -1,14 +1,21 @@
 {
   "name": "fetchup",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Level up your requests using the native Fetch API.",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ""
   },
   "keywords": [],
   "author": "Edgar Bermejo",
-  "license": "ISC",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./lib/types.d.ts",
+      "import": "./lib/fetchup.js"
+    },
+    "./package.json": "./package.json"
+  },
   "devDependencies": {
     "@types/node": "^20.3.2",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
