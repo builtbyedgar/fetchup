@@ -1,49 +1,88 @@
+import { ApiResponse, IFetchup, RequestConfig } from './types'
+
 /**
- *
+ * A TypeScript library that provides a simplified and type-safe way to handle API
+ * calls using the native JavaScript Fetch API. It offers a convenient interface for
+ * making single or multiple requests, with the ability to cancel ongoing requests.
  */
-class FetchUp implements IFetchup {
-  private static instance: FetchUp
+class Fetchup implements IFetchup {
+  private static instance: Fetchup
   private controller: AbortController
 
   constructor() {
     this.controller = new AbortController()
   }
 
-  public static getInstance(): FetchUp {
-    if (!FetchUp.instance) {
-      FetchUp.instance = new FetchUp()
+  /**
+   * Create an instance of FetchUp
+   *
+   * @returns {Fetchup}
+   */
+  public static getInstance(): Fetchup {
+    if (!Fetchup.instance) {
+      Fetchup.instance = new Fetchup()
     }
-    return FetchUp.instance
+
+    return Fetchup.instance
   }
 
-  async get<T>(
-    config: RequestConfig | RequestConfig[],
-  ): Promise<ApiResponse<T> | ApiResponse<T>[]> {
-    const isMultipleRequests = Array.isArray(config)
-    const requests = isMultipleRequests
-      ? config.map(this.createRequest)
-      : [this.createRequest(config as RequestConfig)]
+  /**
+   * Make a request
+   *
+   * @param {RequestConfig | RequestConfig[]}
+   * @returns {Promise<ApiResponse<T> | ApiResponse<T>[] | Error>}
+   */
+  async request<T>(
+    config: RequestConfig | RequestConfig[]
+  ): Promise<ApiResponse<T> | ApiResponse<T>[] | Error> {
+    const multi = Array.isArray(config)
 
-    const signal = this.controller.signal
+    const requests = multi
+      ? config.map(Fetchup.instance.createRequest)
+      : [Fetchup.instance.createRequest(config as RequestConfig)]
 
     const promises = requests.map((request) =>
-      window.fetch(request, { signal }).then(this.handleResponse),
+      window.fetch(request).then(Fetchup.instance.handleResponse)
     )
 
     try {
-      const responses = await Promise.all(promises)
-      return isMultipleRequests
-        ? (responses as ApiResponse<T>[])
-        : (responses[0] as ApiResponse<T>)
-    } catch (error) {
-      throw error
+      const responses = await Promise.allSettled(promises)
+      const results = responses.map(Fetchup.instance.parseSettledResponse)
+
+      if (multi) {
+        return results as ApiResponse<T>[]
+      } else {
+        return results[0] as ApiResponse<T>
+      }
+    } catch (error: Error | any | unknown) {
+      return new Error(
+        error?.map((e: any) => e.message).join('\n') ?? 'unknown'
+      )
     }
   }
 
+  /**
+   * Normalize the requests
+   *
+   * @param {RequestConfig}
+   * @returns {Request}
+   */
   private createRequest(config: RequestConfig): Request {
-    return typeof config === 'string' ? new Request(config) : config
+    const signal = Fetchup.instance.controller.signal
+    if (typeof config === 'string') {
+      return new Request(config, { signal })
+    }
+
+    const { url, options } = config
+    return new Request(url, { ...options, signal })
   }
 
+  /**
+   * Handle requests response
+   *
+   * @param {Response}
+   * @returns {Promise<ApiResponse<T>>}
+   */
   private async handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
     const data = await response.json()
     return {
@@ -52,13 +91,40 @@ class FetchUp implements IFetchup {
     }
   }
 
+  /**
+   * Parse settled response
+   *
+   * @param {PromiseSettledResult<ApiResponse<T>>}
+   * @returns {ApiResponse<T>}
+   */
+  private parseSettledResponse<T>(
+    resp: PromiseSettledResult<ApiResponse<T>>
+  ): ApiResponse<T> {
+    if (resp.status === 'fulfilled') {
+      return resp.value
+    } else {
+      return {
+        status: 'rejected',
+        reason: resp.reason || 'failed to fetch',
+      }
+    }
+  }
+
+  /**
+   * Cancel request
+   */
   abort(): void {
     this.controller.abort()
   }
 }
 
-const Fetchup = FetchUp.getInstance()
-const abort = Fetchup.abort
-const get = Fetchup.get
+/**
+ * @internal
+ *
+ * The lib API
+ */
+const fetchup = Fetchup.getInstance()
+const abort = fetchup.abort
+const request = fetchup.request
 
-export {Fetchup as default, abort, get }
+export { fetchup as default, abort, request }
