@@ -1,4 +1,4 @@
-# Fetchup
+# Ftchup
 
 Level up your requests using the native Fetch API.
 
@@ -17,7 +17,7 @@ Ftchup provides a simplified and type-safe way to handle API calls using the nat
 interface for making single or multiple requests, with the ability to cancel ongoing requests.
 ## Table of Contents
 
-- [Fetchup](#fetchup)
+- [Ftchup](#ftchup)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Installation](#installation)
