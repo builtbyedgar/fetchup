@@ -1,9 +1,12 @@
 /**
- * A TypeScript library that provides a simplified and type-safe way to handle API
- * calls using the native JavaScript Fetch API. It offers a convenient interface for
- * making single or multiple requests, with the ability to cancel ongoing requests.
+ * @license Ftchup
+ *
+ * Copyright (c) Edgar Bermejo.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
-class Ftchup implements IFtchup {
+class Ftchup {
   private static instance: Ftchup
   private controller: AbortController
 
@@ -112,7 +115,7 @@ class Ftchup implements IFtchup {
    * Cancel request
    */
   abort(): void {
-    this.controller.abort()
+    Ftchup.instance.controller.abort()
   }
 }
 
