@@ -3,8 +3,8 @@
  * calls using the native JavaScript Fetch API. It offers a convenient interface for
  * making single or multiple requests, with the ability to cancel ongoing requests.
  */
-class Fetchup implements IFetchup {
-  private static instance: Fetchup
+class Ftchup implements IFtchup {
+  private static instance: Ftchup
   private controller: AbortController
 
   constructor() {
@@ -14,14 +14,14 @@ class Fetchup implements IFetchup {
   /**
    * Create an instance of FetchUp
    *
-   * @returns {Fetchup}
+   * @returns {Ftchup}
    */
-  public static getInstance(): Fetchup {
-    if (!Fetchup.instance) {
-      Fetchup.instance = new Fetchup()
+  public static getInstance(): Ftchup {
+    if (!Ftchup.instance) {
+      Ftchup.instance = new Ftchup()
     }
 
-    return Fetchup.instance
+    return Ftchup.instance
   }
 
   /**
@@ -36,16 +36,16 @@ class Fetchup implements IFetchup {
     const multi = Array.isArray(config)
 
     const requests = multi
-      ? config.map(Fetchup.instance.createRequest)
-      : [Fetchup.instance.createRequest(config as RequestConfig)]
+      ? config.map(Ftchup.instance.createRequest)
+      : [Ftchup.instance.createRequest(config as RequestConfig)]
 
     const promises = requests.map((request) =>
-      window.fetch(request).then(Fetchup.instance.handleResponse),
+      window.fetch(request).then(Ftchup.instance.handleResponse),
     )
 
     try {
       const responses = await Promise.allSettled(promises)
-      const results = responses.map(Fetchup.instance.parseSettledResponse)
+      const results = responses.map(Ftchup.instance.parseSettledResponse)
 
       if (multi) {
         return results as ApiResponse<T>[]
@@ -66,7 +66,7 @@ class Fetchup implements IFetchup {
    * @returns {Request}
    */
   private createRequest(config: RequestConfig): Request {
-    const signal = Fetchup.instance.controller.signal
+    const signal = Ftchup.instance.controller.signal
     if (typeof config === 'string') {
       return new Request(config, { signal })
     }
@@ -121,8 +121,8 @@ class Fetchup implements IFetchup {
  *
  * The lib API
  */
-const fetchup = Fetchup.getInstance()
-const abort = fetchup.abort
-const request = fetchup.request
+const ftchup = Ftchup.getInstance()
+const abort = ftchup.abort
+const request = ftchup.request
 
-export { fetchup as default, abort, request }
+export { ftchup as default, abort, request }

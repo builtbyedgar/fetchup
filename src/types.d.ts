@@ -14,7 +14,7 @@ interface CustomRequest {
 
 type RequestConfig = CustomRequest | string
 
-interface IFetchup {
+interface IFtchup {
   /** Make the request or requests */
   request<T>(
     config: RequestConfig | RequestConfig[],
