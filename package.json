@@ -1,11 +1,12 @@
 {
   "name": "ftchup",
-  "version": "1.0.3",
+  "version": "0.0.0-development",
   "description": "Level up your requests using the native Fetch API.",
   "type": "module",
   "scripts": {
     "prepack": "rm -rf ./dist && mkdir dist && cp src/ftchup.ts src/types.d.ts package.json LICENSE dist/",
-    "pack": "cd dist && npm pack"
+    "pack": "cd dist && npm pack",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "fetch",
@@ -29,5 +30,9 @@
     "semantic-release": "^21.0.5",
     "typescript": "^5.1.5",
     "typescript-eslint": "0.0.1-alpha.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/builtbyedgar/fetchup.git"
   }
 }
