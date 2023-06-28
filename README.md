@@ -5,7 +5,11 @@ Level up your requests using the native Fetch API.
 ![NPM](https://img.shields.io/npm/l/ftchup)
 ![npm](https://img.shields.io/npm/v/ftchup)
 
-**Build with 🖤 and some lines of ![TypeScript](https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png**
+🚨 This library uses TypeScript without compilation.
+
+<img 
+  src='https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png'
+  width='20' height='20' /> 🖤
 
 Fetchup is a TypeScript library that provides a simplified and type-safe way to handle API
 calls using the native JavaScript Fetch API. It offers a convenient interface for making single
